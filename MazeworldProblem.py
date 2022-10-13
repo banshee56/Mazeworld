@@ -32,7 +32,21 @@ class MazeworldProblem:
     def goal_test(self, state):
         return 
         
-    def getHeurisitc(self, state):
+    def cost_fn(self, parent, child, visited):
+        # if child state has the robot moving
+        # only then does it use up 1 unit of fuel
+        
+        # the robot who will be moving
+        robot = parent[0]
+
+        # the robot moved
+        if child[robot+1] != parent[robot+1]:
+            return visited[parent] + 1
+        
+        # otherwise it did not move
+        return visited[parent]
+        
+    def heuristic_fn(self, state):
         return 0
 
 

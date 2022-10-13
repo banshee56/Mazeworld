@@ -62,17 +62,17 @@ def astar_search(search_problem, heuristic_fn):
             return solution
         
         for child in search_problem.get_successors(curr_state):
+            child_cost = search_problem.cost_fn(curr_state, child, visited_cost)
+
             if child not in visited_cost:
                 # add to visited set, with cost 1 more than that of getting to its parent
-                visited_cost[child] = visited_cost[curr_state] + 1
+                visited_cost[child] = child_cost
                 child_node = AstarNode(child, heuristic_fn(child), curr_node,  curr_node.cost + 1)
                 
             else:
-                curr_cost = curr_node.cost + 1
-
-                if curr_cost < visited_cost[child]:
-                    visited_cost[child] = curr_cost
-                    child_node = AstarNode(child, heuristic_fn(child), curr_node,  curr_cost)
+                if child_cost < visited_cost[child]:
+                    visited_cost[child] = child_cost
+                    child_node = AstarNode(child, heuristic_fn(child), curr_node,  child_cost)
                     heappush(pqueue, child_node)
     
     return solution
