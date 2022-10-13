@@ -7,6 +7,7 @@ class MazeworldProblem:
 
     def __init__(self, maze, goal_locations):
         self.maze = maze
+        self.start_state
         self.goal_locations = goal_locations
 
 
@@ -29,9 +30,12 @@ class MazeworldProblem:
 
             print(str(self.maze))
 
+    # checks if the current state is the goal
     def goal_test(self, state):
-        return 
-        
+        # removing the value for the robot turn to get the locations of the robots only
+        locations =  state[1:]
+        return locations == self.goal_locations
+
     def cost_fn(self, parent, child, visited):
         # if child state has the robot moving
         # only then does it use up 1 unit of fuel
@@ -45,10 +49,21 @@ class MazeworldProblem:
         
         # otherwise it did not move
         return visited[parent]
-        
-    def heuristic_fn(self, state):
-        return 0
 
+    def heuristic_fn(self, state):
+        # state (R, xa, ya, xb, yb, xc, yc)
+        d = 0
+
+        for i in range(1, len(state), 2):
+            x = state[i]
+            y = state[i+1]
+
+            goal_x = self.goal_locations[i-1]
+            goal_y = self.goal_locations[i]
+
+            d += abs(goal_x - x) + abs(goal_y - y)
+
+        return d
 
 ## A bit of test code. You might want to add to it to verify that things
 #  work as expected.

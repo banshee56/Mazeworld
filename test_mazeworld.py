@@ -1,7 +1,6 @@
 from MazeworldProblem import MazeworldProblem
 from Maze import Maze
-
-from uninformed_search import bfs_search
+from manhattan_heurisitic import heuristic_fn
 from astar_search import astar_search
 
 # null heuristic, useful for testing astar search without heuristic (uniform cost search).
