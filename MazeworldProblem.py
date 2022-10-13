@@ -6,6 +6,8 @@ class MazeworldProblem:
     ## you write the constructor, and whatever methods your astar function needs
 
     def __init__(self, maze, goal_locations):
+        self.maze = maze
+        self.goal_locations = goal_locations
 
 
     def __str__(self):
@@ -26,6 +28,12 @@ class MazeworldProblem:
             sleep(1)
 
             print(str(self.maze))
+
+    def goal_test(self, state):
+        return 
+        
+    def getHeurisitc(self, state):
+        return 0
 
 
 ## A bit of test code. You might want to add to it to verify that things
