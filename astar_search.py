@@ -2,9 +2,6 @@ from SearchSolution import SearchSolution
 from heapq import heappush, heappop
 
 class AstarNode:
-    # each search node except the root has a parent node
-    # and all search nodes wrap a state object
-
     def __init__(self, state, heuristic, parent=None, transition_cost=0):
         # you write this part
         self.state = state
@@ -13,17 +10,12 @@ class AstarNode:
         self.cost = transition_cost
 
     def priority(self):
-        # you write this part
         return self.heuristic + self.cost
 
     # comparison operator,
     # needed for heappush and heappop to work with AstarNodes:
     def __lt__(self, other):
         return self.priority() < other.priority()
-
-    # method for checking if a state already exists in the heap
-    def __eq__(self, other):
-        return self.state == other.state
 
 # take the current node, and follow its parents back
 #  as far as possible. Grab the states from the nodes,
@@ -46,7 +38,6 @@ def astar_search(search_problem, heuristic_fn):
     if len(search_problem.start_state) == 1:
         return solution
 
-    # I'll get you started:
     start_node = AstarNode(search_problem.start_state, heuristic_fn(search_problem.start_state))
     pqueue = []
     heappush(pqueue, start_node)    # heappsh(heap, item), so pqueue is heap
@@ -66,22 +57,10 @@ def astar_search(search_problem, heuristic_fn):
             solution.nodes_visited = len(visited_cost)
             solution.path = backchain(curr_node)
             return solution
-        
-        printIt = False
-        if curr_state == (1, 1, 2, 2, 2, 3, 2):
-            print('b messes up here')
-            printIt = True
 
         children = search_problem.get_successors(curr_state)
-        if printIt:
-            print(children)
+        
         for child in children:
-            if printIt:
-                print(search_problem.goal_locations)
-                print(child[1:])
-                print(heuristic_fn(child))
-                print('---------')
-
             child_cost = search_problem.cost_fn(curr_state, child, visited_cost)
             child_node = AstarNode(child, heuristic_fn(child), curr_node,  child_cost)
 
@@ -90,10 +69,6 @@ def astar_search(search_problem, heuristic_fn):
                 # add to visited set or replace the existing higher cost node
                 visited_cost[child] = child_cost
                 heappush(pqueue, child_node)
-                
-            # elif child_cost < visited_cost[child]:
-            #     visited_cost[child] = child_cost
-            #     heappush(pqueue, child_node)
     
     return solution
 

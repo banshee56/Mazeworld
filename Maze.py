@@ -145,8 +145,9 @@ if __name__ == "__main__":
     # print(test_maze3)
 
     # print(test_maze3)
-    print(test_maze3.robotloc)
+    # print(test_maze3.robotloc)
 
     # print(test_maze3.is_floor(2, 3))
     # print(test_maze3.is_floor(-1, 3))
-    print(test_maze3.is_floor(2, 3))
+    # print(test_maze3.is_floor(2, 3))
+    print(test_maze3.map)
