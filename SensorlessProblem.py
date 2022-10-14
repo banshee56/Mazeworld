@@ -2,26 +2,22 @@ from Maze import Maze
 from time import sleep
 
 class SensorlessProblem:
-
-    ## You write the good stuff here:
     def __init__(self, maze):
         self.maze = maze
 
-        self.locationsNum = 0
-
         start_state = []
-
         # gathering the starting locations for the initial belief state
         width = 0
         height = self.maze.height - 1
         for i in range(len(self.maze.map)):
             char = self.maze.map[i]
             
+            # if '.', that's an open floor and possible location
             if char == '.':
-                self.locationsNum += 1
                 possible_location = (width, height)
                 start_state.append(possible_location)
 
+            # resetting width and going down the maze
             if width == self.maze.width - 1:
                 width = 0
                 height -= 1
@@ -81,9 +77,14 @@ class SensorlessProblem:
         self.maze.robotloc = tuple(self.start_state)
 
         for state in path:
+            locs = []
+            for loc in state:
+                locs.append(loc[0])
+                locs.append(loc[1])
+
             print(str(self))
-            self.maze.robotloc = tuple(state)
-            sleep(1)
+            self.maze.robotloc = tuple(locs)
+            sleep(3)
 
             print(str(self.maze))
 

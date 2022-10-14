@@ -14,6 +14,8 @@ class MazeworldProblem:
         self.start_state = tuple(state)
 
         self.goal_locations = goal_locations
+
+        # total number of robots
         self.robotsNum = len(self.maze.robotloc)//2
 
 
@@ -37,6 +39,8 @@ class MazeworldProblem:
 
             print(str(self.maze))
 
+    # checks if there is ANOTHER robot at (x,y) and returns True if there is
+    # Returns false if the robot on the floor is the one being moved
     def is_robot(self, x, y, state):
         curr_robot = state[0]
         locations = state[1:]
@@ -61,6 +65,7 @@ class MazeworldProblem:
         index = (2*robot) + 1                       # the index of the robot's x location in the state
         location = state[index: index+2]            # the location of the robot to move
         
+        # setting up the value of the next robot to be moved
         if robot == self.robotsNum - 1:
             next_robot = 0
         else:
@@ -79,14 +84,16 @@ class MazeworldProblem:
 
                 # if the potential location has a robot, but the robot is itself (staying put), add the child
                 if not (self.is_robot(x_loc, y_loc, state)):
-                    # print('valid child')
+                    # getting the state as is
                     child = list(state)
+                    # adding the next robot value to it
                     child[0] = next_robot
+                    # changing only the location for the robot being moved
                     child[index] = x_loc
                     child[index+1] = y_loc
-                    children.append(tuple(child))   
 
-        # print('children: '+str(children))
+                    children.append(tuple(child))   
+                
         return children
     
     # checks if the current state is the goal

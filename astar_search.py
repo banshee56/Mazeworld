@@ -70,5 +70,7 @@ def astar_search(search_problem, heuristic_fn):
                 visited_cost[child] = child_cost
                 heappush(pqueue, child_node)
     
+    solution.cost = visited_cost[curr_state]
+    solution.nodes_visited = len(visited_cost)
     return solution
 
