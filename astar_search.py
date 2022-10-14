@@ -58,10 +58,26 @@ def astar_search(search_problem, heuristic_fn):
         curr_state = curr_node.state
 
         if search_problem.goal_test(curr_state):
+            solution.cost = visited_cost[curr_state]
+            solution.nodes_visited = len(visited_cost)
             solution.path = backchain(curr_node)
             return solution
         
-        for child in search_problem.get_successors(curr_state):
+        printIt = False
+        if curr_state == (1, 1, 2, 2, 2, 3, 2):
+            print('b messes up here')
+            printIt = True
+
+        children = search_problem.get_successors(curr_state)
+        if printIt:
+            print(children)
+        for child in children:
+            if printIt:
+                print(search_problem.goal_locations)
+                print(child[1:])
+                print(heuristic_fn(child))
+                print('---------')
+
             child_cost = search_problem.cost_fn(curr_state, child, visited_cost)
             child_node = AstarNode(child, heuristic_fn(child), curr_node,  child_cost)
 
@@ -71,9 +87,9 @@ def astar_search(search_problem, heuristic_fn):
                 visited_cost[child] = child_cost
                 heappush(pqueue, child_node)
                 
-            elif child_cost < visited_cost[child]:
-                visited_cost[child] = child_cost
-                heappush(pqueue, child_node)
+            # elif child_cost < visited_cost[child]:
+            #     visited_cost[child] = child_cost
+            #     heappush(pqueue, child_node)
     
     return solution
 
