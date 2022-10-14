@@ -40,12 +40,16 @@ def backchain(node):
 
 
 def astar_search(search_problem, heuristic_fn):
+    solution = SearchSolution(search_problem, "Astar with heuristic " + heuristic_fn.__name__)
+
+    # only has the robot_turn in the start state, but no robots so no robot locations
+    if len(search_problem.start_state) == 1:
+        return solution
+
     # I'll get you started:
     start_node = AstarNode(search_problem.start_state, heuristic_fn(search_problem.start_state))
     pqueue = []
     heappush(pqueue, start_node)    # heappsh(heap, item), so pqueue is heap
-
-    solution = SearchSolution(search_problem, "Astar with heuristic " + heuristic_fn.__name__)
 
     # state key, cost item
     visited_cost = {}
