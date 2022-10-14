@@ -40,10 +40,12 @@ class MazeworldProblem:
     def is_robot(self, x, y, state):
         curr_robot = state[0]
         locations = state[1:]
+
         for i in range(0, len(locations), 2):
             # if we are looking at location of robot to move, go on to next location
-            if i == curr_robot:
+            if i == 2*curr_robot:
                 continue
+
             rx = locations[i]
             ry = locations[i + 1]
             if rx == x and ry == y:
@@ -71,7 +73,6 @@ class MazeworldProblem:
             x_loc = location[0] + move[0]
             y_loc = location[1] + move[1]
             
-            # print(x_loc, y_loc)
             # check if child is legal move
             # it is legal if the location is a floor that does not have another robot
             if self.maze.is_floor(x_loc, y_loc):
@@ -83,13 +84,7 @@ class MazeworldProblem:
                     child[0] = next_robot
                     child[index] = x_loc
                     child[index+1] = y_loc
-                    children.append(tuple(child))
-            #     else:
-            #         print('another robot here')
-            # else:
-            #     print('not a floor')
-
-            # print('--------')         
+                    children.append(tuple(child))   
 
         # print('children: '+str(children))
         return children
@@ -107,12 +102,8 @@ class MazeworldProblem:
         
         # the robot who will be moving
         robot = parent_state[0]
-        index = (2*robot) + 1                       # the index of the robot's x location in the state
 
         # the robot did not stay put
-        # print(parent_state)
-        # print(child_state)
-        
         if child_state[1:] != parent_state[1:]:
             return visited[parent_state] + 1
         
@@ -123,26 +114,21 @@ class MazeworldProblem:
     # uses manhattan distance for the heuristic
     def manhattan_heuristic(self, state):
         # the total distance from the goal state
-        d = 0
+        robot = state[0]
         locations = state[1:]
         # start the loop from after the value for robot turn
         # going through the locations of each robot
-        for i in range(0, len(locations), 2):
-            # the coordinates of the current robot
-            x = locations[i]
-            y = locations[i+1]
 
-            # the goal coordinates for each robot
-            goal_x = self.goal_locations[i]
-            goal_y = self.goal_locations[i+1]
+        i = 2*robot
+        x = locations[i]
+        y = locations[i+1]
 
-            # add the manhattan distances from the goal location for each robot
-            d += abs(goal_x - x) + abs(goal_y - y)
-        # print(locations)
-        # print(self.goal_locations)
-        # print(d)
-        # print('-------')
-        return d
+        # the goal coordinates for the robot
+        goal_x = self.goal_locations[i]
+        goal_y = self.goal_locations[i+1]
+
+        # the manhattan distances from the goal location to the moving robot
+        return abs(goal_x - x) + abs(goal_y - y)
 
 ## A bit of test code. You might want to add to it to verify that things
 #  work as expected.
